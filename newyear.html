@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For Riddhi ❤️</title>
+    <style>
+        /* --- GENERAL STYLES --- */
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #ffe6f2; /* Light Pink */
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+            color: #d63384;
+            user-select: none;
+            transition: background-color 0.8s ease;
+        }
+
+        /* Music Button */
+        #music-control {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            background: white;
+            padding: 10px;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            font-size: 24px;
+        }
+
+        /* Background elements */
+        .background-elements {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.3;
+            pointer-events: none;
+        }
+        
+        .floating-heart {
+            position: absolute;
+            font-size: 2rem;
+            animation: floatUp 15s linear infinite;
+            opacity: 0.6;
+            z-index: -1;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(110vh) rotate(0deg); }
+            100% { transform: translateY(-10vh) rotate(360deg); }
+        }
+
+        /* --- SCREEN CONTAINERS --- */
+        .screen {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            position: relative;
+            animation: fadeIn 0.8s ease;
+            overflow-y: auto;
+            padding-bottom: 50px;
+        }
+
+        .screen.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.98); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        /* Standard Main Images */
+        .main-img {
+            max-width: 80%;
+            max-height: 35vh;
+            filter: drop-shadow(0 4px 15px rgba(255, 105, 180, 0.3));
+            margin-bottom: 20px;
+            z-index: 10;
+            background: transparent;
+            object-fit: contain;
+        }
+
+        h1, h2, h3, p { margin: 10px 0; z-index: 10; }
+
+        /* --- BUTTONS --- */
+        .btn {
+            background-color: #ff69b4;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            margin: 10px;
+            transition: transform 0.2s;
+            box-shadow: 0 5px 0 #c23a88;
+            z-index: 20;
+            position: relative;
+        }
+        
+        .btn:active {
+            box-shadow: 0 0 0 #c23a88;
+            transform: translateY(5px);
+        }
+
+        /* --- SPECIFIC SCENE STYLES --- */
+
+        /* Scene 1: Static Stickers */
+        .static-sticker {
+            position: absolute;
+            width: 120px;
+            height: auto;
+            z-index: 1;
+            opacity: 0.9;
+            pointer-events: none;
+            filter: drop-shadow(2px 2px 5px rgba(0,0,0,0.1));
+        }
+
+        /* Scene 2: Grapes */
+        .grapes-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            max-width: 350px;
+        }
+        .grape-img {
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+            transition: transform 0.2s;
+            border-radius: 50%;
+        }
+        .grape-img:active { transform: scale(0.8); opacity: 0.5; }
+
+        /* Scene 3: Slider */
+        #skateboard-track {
+            width: 80%;
+            position: relative;
+            height: 150px;
+            border-bottom: 4px dashed #ff69b4;
+            margin: 40px 0 20px 0;
+        }
+        #skateboard-img {
+            position: absolute;
+            left: 0;
+            bottom: 10px;
+            width: 150px;
+            height: auto;
+            transition: left 0.1s;
+        }
+        input[type="range"] { width: 80%; accent-color: #ff69b4; cursor: pointer; }
+
+        /* Floating Extras */
+        .float-extra {
+            position: absolute;
+            width: 80px;
+            animation: floatAround 4s ease-in-out infinite;
+        }
+
+        /* GOALS PAGE */
+        .goal-container {
+            text-align: left;
+            width: 90%; 
+            max-width: 500px;
+            margin-bottom: 30px;
+            background: rgba(255, 255, 255, 0.5);
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+        .goal-label {
+            font-size: 1.4rem; 
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            line-height: 1.4;
+            font-weight: bold;
+            color: #c2185b;
+        }
+        .sticker-gallery {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        .goal-sticker {
+            height: 120px;
+            width: auto;
+            object-fit: contain;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1));
+            transition: transform 0.3s;
+        }
+        .goal-sticker:hover { transform: scale(1.1); }
+        .bobbing-sticker { animation: floatAround 4s ease-in-out infinite; }
+
+        @keyframes floatAround {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        /* Scene 10: Maze */
+        .maze-particle {
+            position: absolute;
+            width: 70px;
+            height: 70px;
+            object-fit: contain;
+            pointer-events: none;
+            z-index: 999;
+        }
+
+        /* Scene 12: Moods */
+        .mood-float {
+            position: absolute;
+            width: 110px;
+            animation: slowBob 3s infinite ease-in-out;
+        }
+        @keyframes slowBob {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- MUSIC CONTROLLER -->
+    <div id="music-control" onclick="toggleMusic()">🎵</div>
+    
+    <!-- AUDIO ELEMENTS: 2 Local Files -->
+    <audio id="bgm-main" loop>
+        <source src="music/theme.mp3" type="audio/mp3">
+    </audio>
+    
+    <audio id="bgm-maze" loop>
+        <source src="music/maze.mp3" type="audio/mp3">
+    </audio>
+
+
+    <!-- BACKGROUND HEARTS -->
+    <div id="hearts-container"></div>
+
+    <!-- SCREEN 1: INTRO -->
+    <div class="screen active" id="screen-1">
+        <!-- 8 STATIC STICKERS -->
+        <img src="images/sticker1.png" class="static-sticker" style="top: 5%; left: 5%; transform: rotate(-15deg);">
+        <img src="images/sticker2.png" class="static-sticker" style="top: 15%; left: 20%; transform: rotate(10deg);">
+        <img src="images/sticker3.png" class="static-sticker" style="top: 5%; right: 5%; transform: rotate(15deg);">
+        <img src="images/sticker4.png" class="static-sticker" style="top: 20%; right: 20%; transform: rotate(-10deg);">
+        <img src="images/sticker5.png" class="static-sticker" style="bottom: 10%; left: 5%; transform: rotate(5deg);">
+        <img src="images/sticker6.png" class="static-sticker" style="bottom: 25%; left: 15%; transform: rotate(-20deg);">
+        <img src="images/sticker7.png" class="static-sticker" style="bottom: 10%; right: 5%; transform: rotate(-5deg);">
+        <img src="images/sticker8.png" class="static-sticker" style="bottom: 25%; right: 15%; transform: rotate(20deg);">
+
+        <!-- Main Content -->
+        <img src="images/gunpoint.png" class="main-img" alt="Gunpoint">
+        <h1>Oye Riddhi 2026 me chalein? 🔫</h1>
+        <div style="margin-top: 20px;">
+            <button class="btn" onclick="nextScreen()">YES</button>
+            <button class="btn" id="btn-no" onmouseover="runAway()" onclick="runAway()">NO</button>
+        </div>
+    </div>
+
+    <!-- SCREEN 2: GRAPES -->
+    <div class="screen" id="screen-2">
+        <img src="images/holding_hands.png" class="main-img" alt="Holding Hands">
+        <h3>12 grapes toh khaale buddhu! 🍇</h3>
+        <p>Tu bhi na bhul jaati h...</p>
+        <div class="grapes-container" id="grapes-box"></div>
+        <h2 id="grape-count">12 left</h2>
+        <img src="images/sticker_extra_grape.png" style="width: 100px; margin-top: 15px; border-radius: 10px; transform: rotate(5deg);">
+    </div>
+
+    <!-- SCREEN 3: SKATEBOARD -->
+    <div class="screen" id="screen-3">
+        <h3>Lesgoooo pakad kr baithna! 🛹</h3>
+        <p>Use this slider to move the skateboard 👇</p>
+        <div id="skateboard-track">
+            <img src="images/skateboard.png" id="skateboard-img" alt="Skateboard">
+        </div>
+        <input type="range" min="0" max="100" value="0" id="skate-slider" oninput="moveSkateboard()">
+        <br><br>
+        <button class="btn" id="skate-next" style="display:none" onclick="nextScreen()">We Reached! Next &rarr;</button>
+    </div>
+
+    <!-- SCREEN 4: PACKING -->
+    <div class="screen" id="screen-4">
+        <h3 id="pack-text">Oh shit packing toh kar lun 2026 ki...</h3>
+        <div style="position: relative; width: 100%; display: flex; justify-content: center;">
+            <img src="images/packing.png" class="main-img" id="packing-img" onclick="finishPacking()" style="cursor: pointer;">
+            <img src="images/packing_extra1.png" class="float-extra" style="left: 5%; top: 20px; transform: rotate(-10deg);">
+            <img src="images/packing_extra2.png" class="float-extra" style="right: 10%; top: 50px; animation-delay: 1s;">
+            <img src="images/packing_extra3.png" class="float-extra" style="left: 15%; bottom: -10px; animation-delay: 2s;">
+        </div>
+        <p>(Tap to Pack)</p>
+        <button class="btn" id="pack-next" style="display:none" onclick="nextScreen()">Let's Go &rarr;</button>
+    </div>
+
+    <!-- SCREEN 5: CHECKLIST -->
+    <div class="screen" id="screen-5">
+        <h2>Goals for 2026 ✅</h2>
+        
+        <!-- Goal 1 -->
+        <div class="goal-container">
+            <label class="goal-label">
+                <input type="checkbox" onclick="checkAllDone()" style="transform: scale(1.5); margin-right: 15px; accent-color: #d63384;"> 
+                Make me a baddie 💅
+            </label>
+            <div class="sticker-gallery">
+                <img src="images/lipgloss.png" class="goal-sticker">
+            </div>
+        </div>
+
+        <!-- Goal 2 -->
+        <div class="goal-container">
+            <label class="goal-label">
+                <input type="checkbox" onclick="checkAllDone()" style="transform: scale(1.5); margin-right: 15px; accent-color: #d63384;"> 
+                Apply sunscreen (clearly hate dhoop) ☀️
+            </label>
+            <div class="sticker-gallery">
+                <!-- Main Sticker -->
+                <img src="images/sunscreen.png" class="goal-sticker">
+                <!-- Extras -->
+                <img src="images/sun_extra1.png" class="goal-sticker bobbing-sticker" style="animation-delay: 0s;">
+                <img src="images/sun_extra2.png" class="goal-sticker bobbing-sticker" style="animation-delay: 1s;">
+                <img src="images/sun_extra3.png" class="goal-sticker bobbing-sticker" style="animation-delay: 0.5s;">
+            </div>
+        </div>
+        <button class="btn" id="list-next" style="display:none; margin-top:20px; margin-bottom: 20px;" onclick="nextScreen()">Done! &rarr;</button>
+    </div>
+
+    <!-- SCREEN 6: WOKE UP -->
+    <div class="screen" id="screen-6">
+        <img src="images/waking_up.png" class="main-img" alt="Waking up">
+        <h2>2026 hogyi kya? 🥱</h2>
+        <button class="btn" onclick="nextScreen()">Check</button>
+    </div>
+
+    <!-- SCREEN 7: PROBLEM -->
+    <div class="screen" id="screen-7">
+        <img src="images/stretcher.png" class="main-img" alt="Stretcher">
+        <h2>Oh no ji ek problem hogyi shit yr! 🚑</h2>
+        <button class="btn" onclick="nextScreen()">Kya hua??</button>
+    </div>
+
+    <!-- SCREEN 8: BABY -->
+    <div class="screen" id="screen-8">
+        <img src="images/baby_2026.png" class="main-img" alt="Baby 2026">
+        <h2>Badhai ho ji chabbis hua hai! 👶✨</h2>
+        <button class="btn" onclick="nextScreen()">Awww &rarr;</button>
+    </div>
+
+    <!-- SCREEN 9: BYE 2025 -->
+    <div class="screen" id="screen-9">
+        <img src="images/bye_2025.png" class="main-img" alt="Bye 2025">
+        <h2>Bye Bye 2025 👋</h2>
+        <div style="width: 80%; height: 50px; background: #ddd; border-radius: 25px; position: relative; margin-top: 20px;">
+            <div style="position: absolute; width: 100%; text-align: center; line-height: 50px; color: #888;">Slide to say Bye &rarr;</div>
+            <div id="swipe-btn" style="width: 50px; height: 50px; background: #ff69b4; border-radius: 50%; position: absolute; left: 0;"></div>
+        </div>
+    </div>
+
+    <!-- SCREEN 10: MAZE / FIREWORKS -->
+    <div class="screen" id="screen-10">
+        <h3>MAZE! (Click button for fun) 🎆</h3>
+        <button class="btn" onclick="explodeMaze()">MAZE ✨</button>
+        <br><br>
+        <button class="btn" style="background-color: #9b59b6;" onclick="nextScreen()">Next &rarr;</button>
+    </div>
+
+    <!-- SCREEN 11: RIDDHI HAPPY? -->
+    <div class="screen" id="screen-11">
+        <h2>Riddhi Happy?</h2>
+        <div style="display: flex; gap: 20px;">
+            <button class="btn" onclick="nextScreen()">Yess</button>
+            <button class="btn" onclick="nextScreen()">Haaanji</button>
+        </div>
+    </div>
+
+    <!-- SCREEN 12a: HAPPY RIDDHI -->
+    <div class="screen" id="screen-12">
+        <h2>Happy Riddhi 💖</h2>
+        <img src="images/happy_riddhi1.png" class="mood-float" style="top: 20%; left: 10%;">
+        <img src="images/happy_riddhi2.png" class="mood-float" style="top: 30%; right: 10%; animation-delay: 1s;">
+        <img src="images/happy_riddhi3.png" class="mood-float" style="bottom: 20%; left: 30%; animation-delay: 2s;">
+        <button class="btn" onclick="nextScreen()">Next</button>
+    </div>
+
+    <!-- SCREEN 12b: SAD RIDDHI -->
+    <div class="screen" id="screen-13">
+        <h2>Sad Riddhi 😢</h2>
+        <img src="images/sad_riddhi1.png" class="mood-float" style="top: 20%; left: 15%;">
+        <img src="images/sad_riddhi2.png" class="mood-float" style="top: 40%; right: 15%; animation-delay: 1.5s;">
+        <img src="images/sad_riddhi3.png" class="mood-float" style="bottom: 25%; left: 40%; animation-delay: 0.5s;">
+        <button class="btn" onclick="nextScreen()">Next</button>
+    </div>
+
+    <!-- SCREEN 12c: BAD RIDDHI -->
+    <div class="screen" id="screen-14">
+        <h2>Bad Riddhi</h2>
+        <button class="btn" onclick="nextScreen()">Next</button>
+    </div>
+
+    <!-- SCREEN 12d: WAS THERE BAD RIDDHI? -->
+    <div class="screen" id="screen-15">
+        <h2>Wait... was there a Bad Riddhi? 🤔</h2>
+        <img src="images/rishi_thinking1.png" class="mood-float" style="top: 20%; left: 10%;">
+        <img src="images/rishi_thinking2.png" class="mood-float" style="top: 15%; right: 10%; animation-delay: 0.8s;">
+        <img src="images/rishi_thinking3.png" class="mood-float" style="bottom: 30%; left: 45%; animation-delay: 1.2s;">
+        <br><br>
+        <button class="btn" onclick="nextScreen()">NO</button>
+    </div>
+
+    <!-- FINAL SCREEN -->
+    <div class="screen" id="screen-16">
+        <h1>Cos there is no Bad Riddhi! ❤️</h1>
+        <p>You are the best. Happy New Year!</p>
+    </div>
+
+
+    <script>
+        // --- MUSIC LOGIC ---
+        let isMusicPlaying = true; 
+        
+        // REFERENCES to the 2 local files
+        const audioMain = document.getElementById('bgm-main');
+        const audioMaze = document.getElementById('bgm-maze');
+
+        function toggleMusic() {
+            isMusicPlaying = !isMusicPlaying;
+            const btn = document.getElementById('music-control');
+            btn.innerText = isMusicPlaying ? "🔊" : "🎵";
+            
+            if(isMusicPlaying) {
+                // If in maze, play maze music. If elsewhere, play main.
+                // Simple check: if background is black, we are likely in maze mode.
+                // Or check currentScreen. But using pause state is safer.
+                if(audioMaze.paused && audioMain.paused) {
+                    audioMain.play().catch(e => console.log("Audio play failed"));
+                } else if (!audioMain.paused) {
+                    audioMain.pause();
+                } else if (!audioMaze.paused) {
+                    audioMaze.pause();
+                }
+            } else {
+                audioMain.pause();
+                audioMaze.pause();
+            }
+        }
+
+        // --- NAVIGATION ---
+        let currentScreen = 1;
+
+        function nextScreen() {
+            document.querySelector('.screen.active').classList.remove('active');
+            
+            // CHECK IF WE ARE LEAVING THE MAZE (Screen 10)
+            if(currentScreen === 10) {
+                // We are leaving the maze page
+                audioMaze.pause();
+                audioMaze.currentTime = 0; // Reset maze song
+                
+                // Resume Main Theme
+                if(isMusicPlaying) {
+                    audioMain.play().catch(e => console.log("Main Audio play failed"));
+                }
+            }
+
+            currentScreen++;
+            
+            // RESET BACKGROUND to Pink (important if coming from black Maze screen)
+            document.body.style.backgroundColor = "#ffe6f2";
+
+            let next = document.getElementById('screen-' + currentScreen);
+            if(next) {
+                next.classList.add('active');
+            }
+            
+            // Auto-play main music on first click (YES button) if not playing
+            if(isMusicPlaying && audioMain.paused && audioMaze.paused) {
+                audioMain.play().catch(e => console.log("Audio autoplay failed"));
+            }
+        }
+
+        // --- SCENE 1: Runaway Button ---
+        function runAway() {
+            const btn = document.getElementById('btn-no');
+            const x = Math.random() * 200 - 100;
+            const y = Math.random() * 200 - 100;
+            btn.style.transform = `translate(${x}px, ${y}px)`;
+        }
+
+        // --- SCENE 2: Grapes ---
+        const grapesBox = document.getElementById('grapes-box');
+        let grapesLeft = 12;
+        
+        for(let i=0; i<12; i++) {
+            let grape = document.createElement('img');
+            grape.src = 'images/grape_sticker.png'; 
+            grape.className = 'grape-img';
+            grape.onclick = function() {
+                this.style.opacity = '0';
+                this.style.pointerEvents = 'none';
+                grapesLeft--;
+                document.getElementById('grape-count').innerText = grapesLeft + " left";
+                if(grapesLeft === 0) {
+                    setTimeout(nextScreen, 800);
+                }
+            };
+            grapesBox.appendChild(grape);
+        }
+
+        // --- SCENE 3: Skateboard ---
+        function moveSkateboard() {
+            const slider = document.getElementById('skate-slider');
+            const img = document.getElementById('skateboard-img');
+            const val = slider.value;
+            img.style.left = val + "%";
+            if(val == 100) document.getElementById('skate-next').style.display = "inline-block";
+        }
+
+        // --- SCENE 4: Packing ---
+        function finishPacking() {
+            document.getElementById('packing-img').src = 'images/packed.png';
+            document.getElementById('pack-text').innerText = "Chalo hogyi! 📦";
+            document.getElementById('pack-next').style.display = "inline-block";
+        }
+
+        // --- SCENE 5: Checklist ---
+        function checkAllDone() {
+            const checkboxes = document.querySelectorAll('#screen-5 input[type="checkbox"]');
+            let allChecked = true;
+            checkboxes.forEach(box => { if(!box.checked) allChecked = false; });
+            if(allChecked) document.getElementById('list-next').style.display = "inline-block";
+        }
+
+        // --- SCENE 9: SLIDE TO SAY BYE ---
+        const swipeBtn = document.getElementById('swipe-btn');
+        // Prevent scrolling on mobile while dragging
+        swipeBtn.parentElement.style.touchAction = "none";
+        
+        let startX;
+        let isDown = false; // Track if mouse/touch is active
+
+        const startSlide = (e) => {
+            isDown = true;
+            startX = (e.touches ? e.touches[0].clientX : e.clientX);
+            // Attach event listeners to document to handle drag outside element
+            document.addEventListener('mousemove', onSlideMove);
+            document.addEventListener('mouseup', endSlide);
+            document.addEventListener('touchmove', onSlideMove, { passive: false });
+            document.addEventListener('touchend', endSlide);
+        };
+
+        const onSlideMove = (e) => {
+            if(!isDown) return;
+            // Prevent default only on touch to stop scrolling
+            if(e.type === 'touchmove') e.preventDefault();
+            
+            const currentX = (e.touches ? e.touches[0].clientX : e.clientX);
+            handleSwipe(currentX);
+        };
+
+        const endSlide = () => {
+            isDown = false;
+            document.removeEventListener('mousemove', onSlideMove);
+            document.removeEventListener('mouseup', endSlide);
+            document.removeEventListener('touchmove', onSlideMove);
+            document.removeEventListener('touchend', endSlide);
+            
+            // Snap back logic
+            const containerWidth = swipeBtn.parentElement.offsetWidth;
+            const btnWidth = swipeBtn.offsetWidth;
+            const maxDist = containerWidth - btnWidth;
+            const currentLeft = parseInt(swipeBtn.style.left || 0);
+            
+            if (currentLeft < maxDist * 0.9) {
+                swipeBtn.style.transition = "left 0.3s ease";
+                swipeBtn.style.left = "0px";
+                setTimeout(() => swipeBtn.style.transition = "", 300);
+            }
+        };
+
+        swipeBtn.addEventListener('mousedown', startSlide);
+        swipeBtn.addEventListener('touchstart', startSlide);
+
+        function handleSwipe(currentX) {
+            let diff = currentX - startX;
+            
+            // Dynamic width calculation
+            const containerWidth = swipeBtn.parentElement.offsetWidth;
+            const btnWidth = swipeBtn.offsetWidth;
+            const maxDist = containerWidth - btnWidth;
+
+            if(diff < 0) diff = 0;
+            if(diff > maxDist) diff = maxDist; 
+            
+            swipeBtn.style.left = diff + "px";
+            
+            // Trigger threshold (e.g. 90% of the way)
+            if(diff >= maxDist * 0.9) {
+                isDown = false;
+                swipeBtn.style.left = maxDist + "px"; 
+                endSlide(); // Cleanup listeners
+                setTimeout(nextScreen, 300);
+            }
+        }
+
+        // --- SCENE 10: MAZE EXPLOSION ---
+        function explodeMaze() {
+            const screen = document.getElementById('screen-10');
+            
+            // 1. CHANGE BACKGROUND TO BLACK
+            document.body.style.backgroundColor = "#000";
+            
+            // 2. SWITCH MUSIC: Pause Main, Play Maze
+            audioMain.pause();
+            if(isMusicPlaying) {
+                audioMaze.play().catch(e => console.log("Maze Audio play failed"));
+            }
+            
+            // 3. Fireworks
+            for(let i=0; i<30; i++) {
+                let img = document.createElement('img');
+                let randomNum = Math.floor(Math.random() * 10) + 1; 
+                img.src = `images/maze${randomNum}.png`;
+                img.className = 'maze-particle';
+                
+                img.style.left = "50%";
+                img.style.top = "50%";
+                
+                const angle = Math.random() * Math.PI * 2;
+                const velocity = Math.random() * 300 + 100;
+                const tx = Math.cos(angle) * velocity;
+                const ty = Math.sin(angle) * velocity;
+
+                img.style.transition = "all 1s ease-out";
+                screen.appendChild(img);
+
+                requestAnimationFrame(() => {
+                    img.style.transform = `translate(${tx}px, ${ty}px) scale(${Math.random() * 1.5})`;
+                    img.style.opacity = 0;
+                });
+
+                setTimeout(() => img.remove(), 1000);
+            }
+        }
+
+        // --- BACKGROUND GENERATOR ---
+        function createHearts() {
+            const container = document.getElementById('hearts-container');
+            const emojis = ['❤️', '💖', '💕', '💗', '💓', '💝', '✨'];
+            for(let i=0; i<20; i++) {
+                let div = document.createElement('div');
+                div.innerHTML = emojis[Math.floor(Math.random() * emojis.length)];
+                div.className = 'floating-heart';
+                div.style.left = Math.random() * 100 + "vw";
+                div.style.animationDuration = (Math.random() * 10 + 5) + "s";
+                div.style.fontSize = (Math.random() * 20 + 20) + "px";
+                container.appendChild(div);
+            }
+        }
+        createHearts();
+
+    </script>
+</body>
+</html>
